@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marked.js Venn Diagram Plugin Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: monospace;
+    }
+    .venn-diagram {
+      margin: 20px 0;
+    }
+    .example {
+      margin: 40px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .example-source {
+      margin-bottom: 20px;
+    }
+    .example-result {
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+    .note {
+      background-color: #f8f9fa;
+      border-left: 4px solid #4285F4;
+      padding: 10px 15px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Marked.js Venn Diagram Plugin Demo</h1>
+
+  <p>This demo shows how to use the Venn Diagram Plugin with Marked.js to create interactive Venn diagrams in your markdown content.</p>
+
+  <div class="note">
+    <p><strong>Note:</strong> The plugin creates a three-circle Venn diagram with content in the intersection areas. You can customize width, height, and fontSize.</p>
+  </div>
+
+  <div class="example">
+    <h2>Basic Example</h2>
+    <div class="example-source">
+      <pre><code>```venn
+A∩B | B∩C | A∩C | A∩B∩C
+```</code></pre>
+    </div>
+    <div class="example-result" id="example1"></div>
+  </div>
+
+  <div class="example">
+    <h2>Named Parameters</h2>
+    <div class="example-source">
+      <pre><code>```venn width=800 height=500 fontSize=16
+Data | Logic | Design | All Three
+```</code></pre>
+    </div>
+    <div class="example-result" id="example2"></div>
+  </div>
+
+  <div class="example">
+    <h2>HTML Content Example</h2>
+    <div class="example-source">
+      <pre><code>```venn width=600 height=400 fontSize=14
+<span style="color:blue">A∩B</span> | <span style="color:green">B∩C</span> | <span style="color:orange">A∩C</span> | <span style="color:red;font-weight:bold">A∩B∩C</span>
+```</code></pre>
+    </div>
+    <div class="example-result" id="example3"></div>
+  </div>
+
+  <div class="example">
+    <h2>Mixed Font Sizes Example</h2>
+    <div class="example-source">
+      <pre><code>```venn width=700 height=500 fontSize=12
+<div style="font-size:10px">Small Text</div> | <div style="font-size:14px">Medium Text</div> | <div style="font-size:18px">Large Text</div> | <div style="font-size:22px">Extra Large</div>
+```</code></pre>
+    </div>
+    <div class="example-result" id="example4"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="venn.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Register the venn plugin with marked
+      if (typeof vennPlugin !== 'undefined') {
+        marked.use({ extensions: [vennPlugin()] });
+      }
+
+      // Example 1: Basic
+      document.getElementById('example1').innerHTML = marked.parse(`\`\`\`venn
+A∩B | B∩C | A∩C | A∩B∩C
+\`\`\``);
+
+      // Example 2: Named Parameters
+      document.getElementById('example2').innerHTML = marked.parse(`\`\`\`venn width=800 height=500 fontSize=16
+Data | Logic | Design | All Three
+\`\`\``);
+
+      // Example 3: HTML Content
+      document.getElementById('example3').innerHTML = marked.parse(`\`\`\`venn width=600 height=400 fontSize=14
+<span style="color:blue">A∩B</span> | <span style="color:green">B∩C</span> | <span style="color:orange">A∩C</span> | <span style="color:red;font-weight:bold">A∩B∩C</span>
+\`\`\``);
+
+      // Example 4: Mixed Font Sizes Example
+      document.getElementById('example4').innerHTML = marked.parse(`\`\`\`venn width=700 height=500 fontSize=12
+<div style="font-size:10px">Small Text</div> | <div style="font-size:14px">Medium Text</div> | <div style="font-size:18px">Large Text</div> | <div style="font-size:22px">Extra Large</div>
+\`\`\``);
+    });
+  </script>
+</body>
+</html>
