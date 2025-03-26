@@ -197,9 +197,52 @@ Support | #EA4335 | <div><span style='font-size:1.2em;'>🛠️</span><br>Suppor
     </div>
   </div>
 
+  <div class="example">
+    <h2>Venn Diagram Examples</h2>
+    <div class="example">
+      <h3>Basic Venn Diagram</h3>
+      <div class="example-source">
+        <pre><code>```venn width=600 height=400
+A∩B
+B∩C
+A∩C
+A∩B∩C
+```</code></pre>
+      </div>
+      <div class="example-result" id="venn1"></div>
+    </div>
+
+    <div class="example">
+      <h3>Venn Diagram with Custom Colors</h3>
+      <div class="example-source">
+        <pre><code>```venn width=600 height=400
+Marketing | #4285F4
+Sales | #34A853
+Support | #FBBC05
+Core Team | #EA4335
+```</code></pre>
+      </div>
+      <div class="example-result" id="venn2"></div>
+    </div>
+
+    <div class="example">
+      <h3>Venn Diagram with HTML Content</h3>
+      <div class="example-source">
+        <pre><code>```venn width=600 height=400
+Design | #4285F4 | <div><span style='font-size:1.2em;'>🎨</span><br>Design</div>
+Development | #34A853 | <div><span style='font-size:1.6em;'>💻</span><br>Development</div>
+Testing | #FBBC05 | <div><span style='font-size:1.2em;'>🔍</span><br>Testing</div>
+DevOps | #EA4335 | <div><span style='font-size:1.2em;'>⚙️</span><br>DevOps</div>
+```</code></pre>
+      </div>
+      <div class="example-result" id="venn3"></div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="chevron-marked-plugin.js"></script>
   <script src="pyramid-marked-plugin.js"></script>
+  <script src="venn-marked-plugin.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Register the chevron plugin with marked
@@ -291,6 +334,29 @@ Management | #34A853 | <div><span style='font-size:1.2em;'>📊</span><br>Manage
 Operations | #FBBC05 | <div><span style='font-size:1.2em;'>⚙️</span><br>Operations</div>
 Support | #EA4335 | <div><span style='font-size:1.2em;'>🛠️</span><br>Support</div>
 \`\`\``);
+
+      // Add venn examples
+      document.getElementById('venn1').innerHTML = marked.parse(`\`\`\`venn width=600 height=400
+A∩B
+B∩C
+A∩C
+A∩B∩C
+\`\`\``);
+
+      document.getElementById('venn2').innerHTML = marked.parse(`\`\`\`venn width=600 height=400
+Marketing | #4285F4
+Sales | #34A853
+Support | #FBBC05
+Core Team | #EA4335
+\`\`\``);
+
+      document.getElementById('venn3').innerHTML = marked.parse(`\`\`\`venn width=600 height=400
+Design | #4285F4 | <div><span style='font-size:1.2em;'>🎨</span><br>Design</div>
+Development | #34A853 | <div><span style='font-size:1.2em;'>💻</span><br>Development</div>
+Testing | #FBBC05 | <div><span style='font-size:1.2em;'>🔍</span><br>Testing</div>
+DevOps | #EA4335 | <div><span style='font-size:1.2em;'>⚙️</span><br>DevOps</div>
+\`\`\``);
+
     });
   </script>
 </body>
