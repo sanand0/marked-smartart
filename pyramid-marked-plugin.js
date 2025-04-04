@@ -111,16 +111,23 @@
       level: 'block',
       start(src) { return src.match(/^```pyramid/)?.index; },
       tokenizer(src, tokens) {
-        const match = src.match(/^```pyramid(?:\s+(.*?))?\n([\s\S]+?)\n```/);
-        if (match) {
-          return {
-            type: 'pyramid',
-            raw: match[0],
-            options: match[1] || '',
-            text: match[2],
-            tokens: []
-          };
-        }
+        const startIndex = src.indexOf('```pyramid');
+        if (startIndex === -1) return undefined;
+        
+        const firstNewlineIndex = src.indexOf('\n', startIndex);
+        const endIndex = src.indexOf('\n```', firstNewlineIndex);
+        if (firstNewlineIndex === -1 || endIndex === -1) return undefined;
+        
+        const options = src.substring(startIndex + 10, firstNewlineIndex).trim();
+        const content = src.substring(firstNewlineIndex + 1, endIndex);
+        
+        return {
+          type: 'pyramid',
+          raw: src.substring(startIndex, endIndex + 4),
+          options: options,
+          text: content,
+          tokens: []
+        };
       },
       renderer(token) {
         const globalOptions = parseOptions(token.options);

@@ -162,18 +162,23 @@
         return src.match(/^```chevron/)?.index;
       },
       tokenizer(src, tokens) {
-        const match = src.match(/^```chevron(?:\s+(.*?))?\n([\s\S]+?)\n```/);
-        if (match) {
-          const token = {
-            type: 'chevron',
-            raw: match[0],
-            options: match[1] || '',
-            text: match[2],
-            tokens: []
-          };
-          return token;
-        }
-        return undefined;
+        const startIndex = src.indexOf('```chevron');
+        if (startIndex === -1) return undefined;
+        
+        const firstNewlineIndex = src.indexOf('\n', startIndex);
+        const endIndex = src.indexOf('\n```', firstNewlineIndex);
+        if (firstNewlineIndex === -1 || endIndex === -1) return undefined;
+        
+        const options = src.substring(startIndex + 10, firstNewlineIndex).trim();
+        const content = src.substring(firstNewlineIndex + 1, endIndex);
+        
+        return {
+          type: 'chevron',
+          raw: src.substring(startIndex, endIndex + 4),
+          options: options,
+          text: content,
+          tokens: []
+        };
       },
       renderer(token) {
         // Parse global options

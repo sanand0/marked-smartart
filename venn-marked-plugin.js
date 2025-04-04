@@ -71,9 +71,12 @@
   function parseOptions(optionsStr) {
     if (!optionsStr) return {};
     
-    if (/^\d+\s+\d+$/.test(optionsStr)) {
-      const [width, height] = optionsStr.split(/\s+/).map(Number);
-      return { width, height };
+    if (/^\d+(\s+\d+){1,2}$/.test(optionsStr)) {
+      const values = optionsStr.split(/\s+/).map(Number);
+      const result = { width: values[0] };
+      if (values.length > 1) result.height = values[1];
+      if (values.length > 2) result.fontSize = values[2];
+      return result;
     }
 
     const options = {};
@@ -86,7 +89,6 @@
                     value === 'true' ? true :
                     value === 'false' ? false : value;
     });
-
     return options;
   }
 
@@ -96,14 +98,23 @@
       level: 'block',
       start(src) { return src.match(/^```venn/)?.index; },
       tokenizer(src) {
-        const match = src.match(/^```venn(?:\s+(.*?))?\n([\s\S]+?)\n```/);
-        return match ? {
+        const startIndex = src.indexOf('```venn');
+        if (startIndex === -1) return undefined;
+        
+        const firstNewlineIndex = src.indexOf('\n', startIndex);
+        const endIndex = src.indexOf('\n```', firstNewlineIndex);
+        if (firstNewlineIndex === -1 || endIndex === -1) return undefined;
+        
+        const options = src.substring(startIndex + 7, firstNewlineIndex).trim();
+        const content = src.substring(firstNewlineIndex + 1, endIndex);
+        
+        return {
           type: 'venn',
-          raw: match[0],
-          options: match[1] || '',
-          text: match[2],
+          raw: src.substring(startIndex, endIndex + 4),
+          options: options,
+          text: content,
           tokens: []
-        } : undefined;
+        };
       },
       renderer(token) {
         const globalOptions = parseOptions(token.options);
@@ -111,8 +122,11 @@
         const contentArray = [];
         const optionsArray = [];
 
-        // Process each line - simplified approach similar to pyramid-marked-plugin.js
-        lines.forEach(line => {
+        // Process each line up to a maximum of 4
+        for (let i = 0; i < Math.min(lines.length, 4); i++) {
+          const line = lines[i];
+          if (!line.trim()) continue; // Skip empty lines
+          
           const parts = line.split('|').map(part => part.trim());
           let content = parts[0];
           let regionOptions = {};
@@ -133,9 +147,9 @@
             content = parts[2];
           }
           
-          contentArray.push(content);
-          optionsArray.push(regionOptions);
-        });
+          contentArray[i] = content;
+          optionsArray[i] = regionOptions;
+        }
         
         return createVennSVG(contentArray, optionsArray, globalOptions);
       }
