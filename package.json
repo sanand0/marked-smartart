@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@marp-team/marp-cli": "^4.1.2",
+    "markdown-it-mermaid": "^0.2.5"
+  }
+}
