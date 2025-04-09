@@ -1,143 +1,152 @@
-# Chevron Process Diagram Plugin for Marked.js
+# Marp SmartArts
 
-A Marked.js plugin that allows you to create SVG chevron process diagrams directly in your Markdown using code blocks. This plugin makes it easy to create professional-looking process flows, workflows, and step diagrams.
+A collection of custom diagram plugins for Marp presentations, including Pyramid, Chevron, and Venn diagrams. These plugins integrate seamlessly with Marp and can coexist with standard Mermaid diagrams to create beautiful, interactive diagrams in your presentations.
 
-## Installation
+## Project Structure
 
-### Browser
+The project is organized into modular components:
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="chevron-marked-plugin.js"></script>
-<script>
-  // Register the plugin
-  marked.use({ extensions: [chevronPlugin()] });
-</script>
-```
+- **Diagram Renderers**:
+  - `pyramid.js`: Renders pyramid diagrams
+  - `chevron.js`: Renders chevron diagrams
+  - `venn.js`: Renders venn diagrams
+  
+- **Utilities**:
+  - `utils.js`: Shared utility functions for all diagram types
+  
+- **Integration**:
+  - `smartart-markdown-it.js`: Unified plugin that combines all diagram types
+  - `smartart-map-engine.js`: Custom Marp engine that uses the unified plugin
 
-### Node.js
+## Usage with Marp CLI
 
 ```bash
-npm install marked
+npx @marp-team/marp-cli --engine ./smartart-map-engine.js your-presentation.md --output your-presentation.html
 ```
 
-```javascript
-const marked = require('marked');
-const { chevronPlugin } = require('./chevron-marked-plugin.js');
+## Diagram Types
 
-// Register the plugin
-marked.use({ extensions: [chevronPlugin()] });
-```
+### Pyramid Diagrams
 
-## Usage
-
-Create chevron diagrams using code blocks with the `chevron` language identifier:
+Create hierarchical structures with pyramid diagrams:
 
 ````markdown
-```chevron
-Step 1
-Step 2
-Step 3
+```mermaid
+pyramid
+options: width=400 height=200 fontSize=18
+    Strategy | #4285F4
+    Tactics | #34A853
+    Operations | #FBBC05
 ```
 ````
 
-### Optional Parameters
+### Chevron Diagrams
 
-You can specify width and height for each chevron:
+Create process flows and sequential steps with chevron diagrams:
 
 ````markdown
-```chevron 200 100
-Step 1
-Step 2
-Step 3
+```mermaid
+chevron
+options: width=200 height=100 fontSize=16
+    Analysis | #1E88E5
+    Design | #43A047
+    Implementation | #FDD835
+    Evaluation | #E53935
 ```
 ````
 
-Where:
-- `200` is the width of each chevron in pixels
-- `100` is the height of each chevron in pixels
+### Venn Diagrams
 
-### Custom Colors
-
-Specify custom colors for each chevron by adding a pipe (`|`) followed by a color code:
+Create relationship and intersection diagrams with Venn diagrams:
 
 ````markdown
-```chevron
-Planning | #4285F4
-Development | #34A853
-Testing | #FBBC05
-Deployment | #EA4335
-```
-````
-
-### Custom HTML Content
-
-Add custom HTML content to each chevron by adding a second pipe (`|`) followed by HTML:
-
-````markdown
-```chevron
-Planning | #4285F4 | <strong>Planning</strong><br>Phase 1
-Development | #34A853 | <strong>Development</strong><br>Phase 2
-Testing | #FBBC05 | <strong>Testing</strong><br>Phase 3
+```mermaid
+venn
+options: width=600 height=400 fontSize=16
+    Concept A | #4285F4
+    Concept B | #34A853
+    Concept C | #FBBC05
+    Intersection | #EA4335
 ```
 ````
 
 ## Syntax Reference
 
-The general syntax for each chevron line is:
+All diagram types follow a similar syntax pattern:
 
 ```
-Step text | #color-code | <optional HTML content>
+diagram-type
+options: width=X height=Y fontSize=Z
+    Content 1 | #ColorCode
+    Content 2 | fontSize=16 | #ColorCode
+    ...
 ```
 
-- **Step text**: Plain text to display in the chevron (used if no HTML is provided)
+### Options
+
+You can specify global options for each diagram:
+
+- **width**: Width of the diagram in pixels
+- **height**: Height of the diagram in pixels
+- **fontSize**: Base font size for text in the diagram
+
+### Content Format
+
+Each line of content follows this pattern:
+
+```
+Text content | [options] | #color-code
+```
+
+- **Text content**: Plain text to display
+- **Options**: Item-specific options like `fontSize=16` (optional)
 - **Color code**: Hex color code starting with # (optional)
-- **HTML content**: Custom HTML to display in the chevron (optional)
 
-## Examples
+### Color Handling
 
-### Basic Process Flow
+There's an important difference in how colors are applied:
+
+- **Pyramid and Chevron diagrams**: Colors are applied as background colors
+- **Venn diagrams**: Colors are applied as text colors
+
+## Integration with Standard Mermaid
+
+These plugins work alongside standard Mermaid diagrams, so you can use both in the same presentation:
 
 ````markdown
-```chevron
-Planning
-Development
-Testing
-Deployment
+```mermaid
+flowchart TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Process]
+    B -->|No| D[End]
 ```
 ````
 
-### Agile Process
+## Multiple Diagrams on One Slide
+
+You can combine multiple diagrams on a single slide:
 
 ````markdown
-```chevron 150 80
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
+```mermaid
+pyramid
+options: width=300 height=200
+Strategy | #4285F4
+Tactics | #34A853
+```
+
+```mermaid
+chevron
+options: width=400 height=80
+Plan | #1E88E5
+Build | #43A047
+Test | #FDD835
+Deploy | #E53935
 ```
 ````
-
-### Sales Process with Icons
-
-````markdown
-```chevron 120 120
-Prospecting | #4285F4 | <div><span style='font-size:1.5em;'>🔍</span><br>Prospecting</div>
-Connecting | #34A853 | <div><span style='font-size:1.5em;'>🤝</span><br>Connecting</div>
-Qualifying | #FBBC05 | <div><span style='font-size:1.5em;'>💬</span><br>Qualifying</div>
-Presenting | #EA4335 | <div><span style='font-size:1.5em;'>📊</span><br>Presenting</div>
-Closing | #5F6368 | <div><span style='font-size:1.5em;'>✅</span><br>Closing</div>
-```
-````
-
-## Auto-sizing Text
-
-The plugin automatically resizes text to fit within the chevron. This ensures that your diagrams look good regardless of the content length or chevron size.
 
 ## Browser Compatibility
 
-This plugin should work in all modern browsers that support SVG and foreignObject. For IE11 support, you may need additional polyfills.
+These plugins work in all modern browsers that support SVG and foreignObject elements.
 
 ## License
 

@@ -4,73 +4,9 @@ theme: default
 paginate: true
 ---
 
-# Smart Diagram Integration Test
+# SmartArt Diagram Integration Test
 
-Testing various diagram types with Marp integration
-
----
-
-## Standard Mermaid Flowchart
-
-```mermaid
-graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> A
-```
-
----
-
-## Chevron Diagram - Basic
-
-```mermaid
-chevron
-Planning
-Development
-Testing
-Deployment
-```
-
----
-
-## Chevron Diagram - With Options
-
-```mermaid
-chevron
-options: width=250 height=120 fontSize=16
-    Analysis | #1E88E5
-    Design | #43A047
-    Implementation | #FDD835
-    Evaluation | #E53935
-```
-
----
-
-## Standard Mermaid Sequence Diagram
-
-```mermaid
-sequenceDiagram
-    Alice->>John: Hello John, how are you?
-    John-->>Alice: Great!
-    Alice-)John: See you later!
-```
-
----
-
-## Standard Mermaid Class Diagram
-
-```mermaid
-classDiagram
-    class Animal {
-        +name: string
-        +eat(): void
-    }
-    class Dog {
-        +bark(): void
-    }
-    Animal <|-- Dog
-```
+Testing custom diagram types with unified SmartArt integration
 
 ---
 
@@ -109,6 +45,31 @@ options: width=600 height=400
     Team Leads | #FDD835
     Developers | fontSize=14 | #E53935
     Support | #757575
+```
+
+---
+
+## Chevron Diagram - Basic
+
+```mermaid
+chevron
+Planning
+Development
+Testing
+Deployment
+```
+
+---
+
+## Chevron Diagram - With Options
+
+```mermaid
+chevron
+options: width=250 height=120 fontSize=16
+    Analysis | #1E88E5
+    Design | #43A047
+    Implementation | #FDD835
+    Evaluation | #E53935
 ```
 
 ---
@@ -153,7 +114,7 @@ options: width=650 height=450 fontSize=18
 
 ## Multiple Diagrams on One Slide
 
-### Pyramid and Mermaid Flowchart
+### Pyramid and Chevron Comparison
 
 ```mermaid
 pyramid
@@ -164,55 +125,68 @@ Operations | #FBBC05
 ```
 
 ```mermaid
-graph LR
-    A[Input] --> B[Process]
-    B --> C[Output]
+chevron
+options: width=180 height=100
+Plan | #4285F4
+Do | #34A853
+Check | #FBBC05
+Act | #EA4335
 ```
 
 ---
 
-## Multiple Diagrams on One Slide
+## Testing Text Color in Venn vs Background Color in Others
 
-### Pyramid and Chevron Comparison
+### Venn (Text Color)
+
+```mermaid
+venn
+options: width=500 height=300
+Frontend | #D32F2F
+Backend | #1976D2
+Database | #388E3C
+Full Stack | #F57C00
+```
+
+### Pyramid (Background Color)
 
 ```mermaid
 pyramid
-    options: width=400 height=200
-    Strategy | #4285F4
-    Tactics | #34A853
-    Operations | #FBBC05
+options: width=400 height=200
+Executive | #4285F4
+Management | #34A853
+Staff | #FBBC05
+```
+
+---
+
+## Complex Mixed Diagram Test
+
+### All Three Custom Diagrams
+
+```mermaid
+pyramid
+options: width=300 height=200
+Strategy | #4285F4
+Execution | #34A853
 ```
 
 ```mermaid
 chevron
-    options: width=180 height=200
-    Plan | #4285F4
-    Do | #34A853
-    Check | #FBBC05
-    Act | #EA4335
+options: width=400 height=80
+Plan | #1E88E5
+Build | #43A047
+Test | #FDD835
+Deploy | #E53935
 ```
-
----
-
-## Multiple Diagrams on One Slide
-
-### Venn and Sequence Diagram
 
 ```mermaid
 venn
-options: width=400 height=300
-Design
-Development
-Testing
-Quality
-```
-
-```mermaid
-sequenceDiagram
-    User->>System: Request
-    System->>Database: Query
-    Database-->>System: Response
-    System-->>User: Result
+options: width=300 height=200
+UX | #D32F2F
+Tech | #1976D2
+Business | #388E3C
+Product | #F57C00
 ```
 
 ---
