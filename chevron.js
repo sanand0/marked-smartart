@@ -3,7 +3,7 @@
  * Creates SVG chevron diagrams with customizable steps
  */
 
-const { createError, getDefaultStyles, getDefaultColors, processContentLines } = require('./utils');
+const { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } = require('./utils');
 
 /**
  * Creates an SVG chevron diagram
@@ -93,8 +93,7 @@ function createChevronSVG(contentArray, optionsArray, globalOptions = {}) {
  * Process chevron diagram content from code block
  */
 function processChevronDiagram(content) {
-  const lines = content.trim().split('\n');
-  const { contentArray, optionsArray, globalOptions } = processContentLines(lines, 'chevron');
+  const { contentArray, optionsArray, globalOptions } = processSmartArtContent(content, 'chevron');
   
   return createChevronSVG(contentArray, optionsArray, globalOptions);
 }

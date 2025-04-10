@@ -34,6 +34,27 @@ function parseOptions(optionsStr) {
 }
 
 /**
+ * Parse options from curly brace format to object
+ */
+function parseCurlyOptions(optionsStr) {
+  if (!optionsStr) return {};
+  
+  const options = {};
+  const optionPairs = optionsStr.split(',').map(pair => pair.trim());
+  
+  optionPairs.forEach(pair => {
+    const [key, value] = pair.split(':').map(s => s.trim());
+    if (key && value) {
+      options[key] = /^\d+$/.test(value) ? parseInt(value, 10) : 
+                   /^\d+\.\d+$/.test(value) ? parseFloat(value) :
+                   value.replace(/['"]/g, ''); // Remove quotes from string values
+    }
+  });
+  
+  return options;
+}
+
+/**
  * Check if a string is a valid hex color code
  */
 const isColorCode = str => str && /^#([0-9A-F]{3}){1,2}$/i.test(str);
@@ -64,7 +85,7 @@ const getDefaultColors = (isVenn = false) => isVenn ?
   ['#4285F4', '#34A853', '#FBBC05', '#EA4335', '#5F6368'];
 
 /**
- * Process content lines for diagrams
+ * Process content lines for diagrams (old format with pipe separator)
  */
 function processContentLines(lines, diagramType) {
   const contentArray = [];
@@ -111,9 +132,62 @@ function processContentLines(lines, diagramType) {
   return { contentArray, optionsArray, globalOptions };
 }
 
+/**
+ * Process content lines for smartart diagrams (new format with curly braces)
+ */
+function processSmartArtContent(content, diagramType) {
+  const lines = content.trim().split('\n');
+  
+  // Find the separator line
+  const separatorIndex = lines.findIndex(line => line.trim() === '---');
+  const startIndex = separatorIndex !== -1 ? separatorIndex + 1 : 0;
+  
+  // Extract global options before the separator
+  let globalOptions = {};
+  for (let i = 0; i < (separatorIndex !== -1 ? separatorIndex : 1); i++) {
+    const line = lines[i].trim();
+    if (line === `type: ${diagramType}`) continue;
+    
+    // Parse width, height, fontSize directly
+    if (line.startsWith('width:')) {
+      globalOptions.width = parseInt(line.split(':')[1].trim(), 10);
+    } else if (line.startsWith('height:')) {
+      globalOptions.height = parseInt(line.split(':')[1].trim(), 10);
+    } else if (line.startsWith('fontSize:')) {
+      globalOptions.fontSize = parseInt(line.split(':')[1].trim(), 10);
+    }
+  }
+  
+  // Process content lines after the separator
+  const contentArray = [];
+  const optionsArray = [];
+  
+  for (let i = startIndex; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    // Parse content and options using the new format: Content { option: value }
+    const contentMatch = line.match(/^(.*?)(?:\s*\{\s*(.*?)\s*\})?$/);
+    
+    if (contentMatch) {
+      const content = contentMatch[1].trim();
+      const optionsStr = contentMatch[2] || '';
+      
+      // Parse options
+      const itemOptions = parseCurlyOptions(optionsStr);
+      
+      contentArray.push(content);
+      optionsArray.push(itemOptions);
+    }
+  }
+  
+  return { contentArray, optionsArray, globalOptions };
+}
+
 module.exports = {
   createError,
   getDefaultStyles,
   getDefaultColors,
-  processContentLines
+  processContentLines,
+  processSmartArtContent
 };

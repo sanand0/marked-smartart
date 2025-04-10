@@ -3,7 +3,7 @@
  * Creates SVG pyramid diagrams with customizable layers
  */
 
-const { createError, getDefaultStyles, getDefaultColors, processContentLines } = require('./utils');
+const { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } = require('./utils');
 
 /**
  * Creates an SVG pyramid diagram
@@ -86,8 +86,7 @@ function createPyramidSVG(contentArray, optionsArray, globalOptions = {}) {
  * Process pyramid diagram content from code block
  */
 function processPyramidDiagram(content) {
-  const lines = content.trim().split('\n');
-  const { contentArray, optionsArray, globalOptions } = processContentLines(lines, 'pyramid');
+  const { contentArray, optionsArray, globalOptions } = processSmartArtContent(content, 'pyramid');
   
   return createPyramidSVG(contentArray, optionsArray, globalOptions);
 }

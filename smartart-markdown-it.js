@@ -17,12 +17,12 @@ function markdownItSmartArt(md) {
     const code = token.content.trim();
     const firstLine = code.split('\n')[0].trim();
     
-    if (token.info.trim() === 'mermaid') {
+    if (token.info.trim() === 'smartart') {
       // Map diagram types to their processors
       const processors = {
-        'pyramid': processPyramidDiagram,
-        'chevron': processChevronDiagram,
-        'venn': processVennDiagram
+        'type: pyramid': processPyramidDiagram,
+        'type: chevron': processChevronDiagram,
+        'type: venn': processVennDiagram
       };
       
       return processors[firstLine]?.(code) || defaultFence(tokens, idx, options, env, self);

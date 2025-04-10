@@ -12,47 +12,62 @@ Testing custom diagram types with unified SmartArt integration
 
 ## Pyramid Diagram - Basic
 
-```mermaid
-pyramid
-    Strategic
-    Tactical
-    Operational
+```smartart
+type: pyramid
+
+---
+
+Strategic
+Tactical
+Operational
 ```
 
 ---
 
 ## Pyramid Diagram - With Options
 
-```mermaid
-pyramid
-options: width=500 height=300 fontSize=16
-    Vision | #4285F4
-    Mission | #34A853
-    Goals | #FBBC05
-    Objectives | #EA4335
-    Tasks | #5F6368
+```smartart
+type: pyramid
+width: 500
+height: 300
+fontSize: 16
+
+---
+
+Vision { color: '#4285F4' }
+Mission { color: '#34A853' }
+Goals { color: '#FBBC05' }
+Objectives { color: '#EA4335' }
+Tasks { color: '#5F6368' }
 ```
 
 ---
 
 ## Pyramid Diagram - With Custom Layer Options
 
-```mermaid
-pyramid
-options: width=600 height=400
-    Leadership | #1E88E5
-    Management | fontSize=18 | #43A047
-    Team Leads | #FDD835
-    Developers | fontSize=14 | #E53935
-    Support | #757575
+```smartart
+type: pyramid
+width: 600
+height: 400
+
+---
+
+Leadership { color: '#1E88E5' }
+Management { color: '#43A047', fontSize: 18 }
+Team Leads { color: '#FDD835' }
+Developers { color: '#E53935', fontSize: 14 }
+Support { color: '#757575' }
 ```
 
 ---
 
 ## Chevron Diagram - Basic
 
-```mermaid
-chevron
+```smartart
+type: chevron
+
+---
+
 Planning
 Development
 Testing
@@ -63,21 +78,29 @@ Deployment
 
 ## Chevron Diagram - With Options
 
-```mermaid
-chevron
-options: width=250 height=120 fontSize=16
-    Analysis | #1E88E5
-    Design | #43A047
-    Implementation | #FDD835
-    Evaluation | #E53935
+```smartart
+type: chevron
+width: 250
+height: 120
+fontSize: 16
+
+---
+
+Analysis { color: '#1E88E5' }
+Design { color: '#43A047' }
+Implementation { color: '#FDD835' }
+Evaluation { color: '#E53935' }
 ```
 
 ---
 
 ## Venn Diagram - Basic
 
-```mermaid
-venn
+```smartart
+type: venn
+
+---
+
 A∩B
 B∩C
 A∩C
@@ -88,26 +111,36 @@ A∩B∩C
 
 ## Venn Diagram - With Options
 
-```mermaid
-venn
-options: width=700 height=500 fontSize=20
+```smartart
+type: venn
+width: 700
+height: 500
+fontSize: 20
+
+---
+
 Marketing
 Sales
 Product
-Core Business | fontSize=24
+Core Business { fontSize: 24 }
 ```
 
 ---
 
 ## Venn Diagram - Business Context
 
-```mermaid
-venn
-options: width=650 height=450 fontSize=18
-    Technology | #1976D2
-    Business | #388E3C
-    User Experience | #F57C00
-    Product Success | fontSize=22 | #D32F2F
+```smartart
+type: venn
+width: 650
+height: 450
+fontSize: 18
+
+---
+
+Technology { color: '#1976D2' }
+Business { color: '#388E3C' }
+User Experience { color: '#F57C00' }
+Product Success { fontSize: 22, color: '#D32F2F' }
 ```
 
 ---
@@ -116,21 +149,29 @@ options: width=650 height=450 fontSize=18
 
 ### Pyramid and Chevron Comparison
 
-```mermaid
-pyramid
-options: width=400 height=200
-Strategy | #4285F4
-Tactics | #34A853
-Operations | #FBBC05
+```smartart
+type: pyramid
+width: 400
+height: 200
+
+---
+
+Strategy { color: '#4285F4' }
+Tactics { color: '#34A853' }
+Operations { color: '#FBBC05' }
 ```
 
-```mermaid
-chevron
-options: width=180 height=100
-Plan | #4285F4
-Do | #34A853
-Check | #FBBC05
-Act | #EA4335
+```smartart
+type: chevron
+width: 180
+height: 100
+
+---
+
+Plan { color: '#4285F4' }
+Do { color: '#34A853' }
+Check { color: '#FBBC05' }
+Act { color: '#EA4335' }
 ```
 
 ---
@@ -139,23 +180,31 @@ Act | #EA4335
 
 ### Venn (Text Color)
 
-```mermaid
-venn
-options: width=500 height=300
-Frontend | #D32F2F
-Backend | #1976D2
-Database | #388E3C
-Full Stack | #F57C00
+```smartart
+type: venn
+width: 500
+height: 300
+
+---
+
+Frontend { color: '#D32F2F' }
+Backend { color: '#1976D2' }
+Database { color: '#388E3C' }
+Full Stack { color: '#F57C00' }
 ```
 
 ### Pyramid (Background Color)
 
-```mermaid
-pyramid
-options: width=400 height=200
-Executive | #4285F4
-Management | #34A853
-Staff | #FBBC05
+```smartart
+type: pyramid
+width: 400
+height: 200
+
+---
+
+Executive { color: '#4285F4' }
+Management { color: '#34A853' }
+Staff { color: '#FBBC05' }
 ```
 
 ---
@@ -164,29 +213,41 @@ Staff | #FBBC05
 
 ### All Three Custom Diagrams
 
-```mermaid
-pyramid
-options: width=300 height=200
-Strategy | #4285F4
-Execution | #34A853
+```smartart
+type: pyramid
+width: 300
+height: 200
+
+---
+
+Strategy { color: '#4285F4' }
+Execution { color: '#34A853' }
 ```
 
-```mermaid
-chevron
-options: width=400 height=80
-Plan | #1E88E5
-Build | #43A047
-Test | #FDD835
-Deploy | #E53935
+```smartart
+type: chevron
+width: 400
+height: 80
+
+---
+
+Plan { color: '#1E88E5' }
+Build { color: '#43A047' }
+Test { color: '#FDD835' }
+Deploy { color: '#E53935' }
 ```
 
-```mermaid
-venn
-options: width=300 height=200
-UX | #D32F2F
-Tech | #1976D2
-Business | #388E3C
-Product | #F57C00
+```smartart
+type: venn
+width: 300
+height: 800
+
+---
+
+UX { color: '#D32F2F' }
+Tech { color: '#1976D2' }
+Business { color: '#388E3C' }
+Product { color: '#F57C00' }
 ```
 
 ---
