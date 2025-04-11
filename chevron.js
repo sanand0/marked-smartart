@@ -3,7 +3,7 @@
  * Creates SVG chevron diagrams with customizable steps
  */
 
-const { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } = require('./utils');
+import { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } from './utils.js';
 
 /**
  * Creates an SVG chevron diagram
@@ -98,11 +98,7 @@ function processChevronDiagram(content) {
   return createChevronSVG(contentArray, optionsArray, globalOptions);
 }
 
-/**
- * Export the main rendering function
- */
-module.exports = {
+export {
   createChevronSVG,
-  processChevronDiagram,
-  defaults: { width: 200, height: 100, fontSize: 14 }
+  processChevronDiagram
 };

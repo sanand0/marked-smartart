@@ -3,361 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Marked.js Chevron Plugin Demo</title>
+  <title>SmartArt Diagram Editor</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 1000px;
+      font-family: arial, sans-serif;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       line-height: 1.6;
     }
-    h1, h2 {
-      color: #333;
+    .editor-container {
+      height: calc(100vh - 150px);
     }
-    pre {
-      background: #f5f5f5;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-    }
-    code {
+    #input-area {
       font-family: monospace;
+      resize: none;
     }
-    .chevron-diagram {
-      margin: 20px 0;
+    .output-container {
+      background-color: #f9f9f9;
     }
-    .example {
-      margin: 40px 0;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-    .example-source {
-      margin-bottom: 20px;
-    }
-    .example-result {
-      padding-top: 20px;
-      border-top: 1px solid #eee;
-    }
-    .note {
-      background-color: #f8f9fa;
-      border-left: 4px solid #4285F4;
-      padding: 10px 15px;
-      margin: 15px 0;
+    #output-area {
+      overflow: auto;
     }
   </style>
 </head>
 <body>
-  <h1>Marked.js Chevron Plugin Demo</h1>
 
-  <p>This demo shows how to use the Chevron Plugin with Marked.js to create process flow diagrams in your markdown content.</p>
+  <div class="container py-4">
+    <h1 class="text-center mb-4">SmartArt Diagram Editor</h1>
+    
+    <div class="editor-container d-flex gap-4">
+      <div class="input-container flex-grow-1 border rounded p-3 d-flex flex-column">
+        <h2 class="h5 text-secondary">Input</h2>
+        <textarea id="input-area" class="form-control flex-grow-1 mb-3" placeholder="Enter your diagram syntax here [Chevron, Venn, Pyramid]...
+Example:
+```smartart
+type: pyramid
+width: 400
+height: 200
 
-  <div class="note">
-    <p><strong>New:</strong> The plugin now supports named parameters for both diagram-level and chevron-level styling!</p>
-  </div>
+---
 
-  <div class="example">
-    <h2>Basic Example</h2>
-    <div class="example-source">
-      <pre><code>```chevron
-Planning
-Development
-Testing
-Deployment
-```</code></pre>
-    </div>
-    <div class="example-result" id="example1"></div>
-  </div>
-
-  <div class="example">
-    <h2>Legacy Format: Custom Width and Height</h2>
-    <div class="example-source">
-      <pre><code>```chevron 150 80
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
-```</code></pre>
-    </div>
-    <div class="example-result" id="example2"></div>
-  </div>
-
-  <div class="example">
-    <h2>New Format: Named Parameters</h2>
-    <div class="example-source">
-      <pre><code>```chevron width=180 height=90 fontSize=16
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
-```</code></pre>
-    </div>
-    <div class="example-result" id="example3"></div>
-  </div>
-
-  <div class="example">
-    <h2>Legacy Format: Custom Colors</h2>
-    <div class="example-source">
-      <pre><code>```chevron
-Idea | #9C27B0
-Research | #3F51B5
-Design | #03A9F4
-Development | #4CAF50
-Testing | #FFC107
-Deployment | #FF5722
-```</code></pre>
-    </div>
-    <div class="example-result" id="example4"></div>
-  </div>
-
-  <div class="example">
-    <h2>New Format: Per-Chevron Options</h2>
-    <div class="example-source">
-      <pre><code>```chevron width=150 height=100
-Idea | color=#9C27B0 fontSize=18
-Research | color=#3F51B5 fontSize=16
-Design | color=#03A9F4 fontSize=14
-Development | color=#4CAF50 fontSize=12
-Testing | color=#FFC107 fontSize=10
-Deployment | color=#FF5722 fontSize=8
-```</code></pre>
-    </div>
-    <div class="example-result" id="example5"></div>
-  </div>
-
-  <div class="example">
-    <h2>Custom HTML Content</h2>
-    <div class="example-source">
-      <pre><code>```chevron width=120 height=120
-Prospecting | color=#4285F4 | <div><span style='font-size:1.5em;'>🔍</span><br>Prospecting</div>
-Connecting | color=#34A853 | <div><span style='font-size:1.5em;'>🤝</span><br>Connecting</div>
-Qualifying | color=#FBBC05 | <div><span style='font-size:1.5em;'>💬</span><br>Qualifying</div>
-Presenting | color=#EA4335 | <div><span style='font-size:1.5em;'>📊</span><br>Presenting</div>
-Closing | color=#5F6368 | <div><span style='font-size:1.5em;'>✅</span><br>Closing</div>
-```</code></pre>
-    </div>
-    <div class="example-result" id="example6"></div>
-  </div>
-
-  <div class="example">
-    <h2>Mixed Options and HTML Content</h2>
-    <div class="example-source">
-      <pre><code>```chevron width=130 height=110 fontSize=12
-Collecting | color=darkblue fontSize=14 | <div><strong>Collecting</strong><br>Data</div>
-Processing | color=teal | <div><strong>Processing</strong><br>Analysis</div>
-Visualizing | color=purple fontSize=16 | <div><strong>Visualizing</strong><br>Results</div>
-Reporting | color=crimson | <div><strong>Reporting</strong><br>Insights</div>
-```</code></pre>
-    </div>
-    <div class="example-result" id="example7"></div>
-  </div>
-
-  <div class="example">
-    <h2>Pyramid Diagram Examples</h2>
-    <div class="example">
-      <h3>Basic Pyramid</h3>
-      <div class="example-source">
-        <pre><code>```pyramid
-Strategy
-Tactics
-Operations
-Execution
-```</code></pre>
+Strategy { color: '#4285F4' }
+Tactics { color: '#34A853' }
+Operations { color: '#FBBC05' }
+```"></textarea>
+        <div class="controls d-flex gap-2">
+          <button id="render-btn" class="btn btn-primary">Render Diagram</button>
+          <button id="clear-btn" class="btn btn-outline-secondary">Clear</button>
+        </div>
       </div>
-      <div class="example-result" id="pyramid1"></div>
-    </div>
-
-    <div class="example">
-      <h3>Pyramid with Custom Colors</h3>
-      <div class="example-source">
-        <pre><code>```pyramid width=500 height=400
-Vision | #9C27B0
-Goals | #3F51B5
-Objectives | #03A9F4
-Actions | #4CAF50
-```</code></pre>
+      
+      <div class="output-container flex-grow-1 border rounded p-3 d-flex flex-column">
+        <h2 class="h5 text-secondary">Output</h2>
+        <div id="output-area" class="flex-grow-1 p-2"></div>
       </div>
-      <div class="example-result" id="pyramid2"></div>
-    </div>
-
-    <div class="example">
-      <h3>Pyramid with HTML Content</h3>
-      <div class="example-source">
-        <pre><code>```pyramid width=400 height=300
-Leadership | #4285F4 | <div><span style='font-size:1.2em;'>👑</span><br>Leadership</div>
-Management | #34A853 | <div><span style='font-size:1.2em;'>📊</span><br>Management</div>
-Operations | #FBBC05 | <div><span style='font-size:1.2em;'>⚙️</span><br>Operations</div>
-Support | #EA4335 | <div><span style='font-size:1.2em;'>🛠️</span><br>Support</div>
-```</code></pre>
-      </div>
-      <div class="example-result" id="pyramid3"></div>
     </div>
   </div>
-
-  <div class="example">
-    <h2>Venn Diagram Examples</h2>
-    <div class="example">
-      <h3>Basic Venn Diagram</h3>
-      <div class="example-source">
-        <pre><code>```venn 
-A∩B
-B∩C
-A∩C
-A∩B∩C
-```</code></pre>
-      </div>
-      <div class="example-result" id="venn1"></div>
-    </div>
-
-    <div class="example">
-      <h3>Venn Diagram with Custom Colors</h3>
-      <div class="example-source">
-        <pre><code>```venn width=600 height=400
-Marketing | #4285F4
-Sales | #34A853
-Support | #FBBC05
-Core Team | #EA4335
-```</code></pre>
-      </div>
-      <div class="example-result" id="venn2"></div>
-    </div>
-
-    <div class="example">
-      <h3>Venn Diagram with HTML Content</h3>
-      <div class="example-source">
-        <pre><code>```venn width=600 height=400
-Design | #4285F4 | <div><span style='font-size:1.2em;'>🎨</span><br>Design</div>
-Development | #34A853 | <div><span style='font-size:1.2em;'>💻</span><br>Development</div>
-Testing | #FBBC05 | <div><span style='font-size:1.2em;'>🔍</span><br>Testing</div>
-DevOps | #EA4335 | <div><span style='font-size:1.2em;'>⚙️</span><br>DevOps</div>
-```</code></pre>
-      </div>
-      <div class="example-result" id="venn3"></div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="chevron-marked-plugin.js"></script>
-  <script src="pyramid-marked-plugin.js"></script>
-  <script src="venn-marked-plugin.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Register the chevron plugin with marked
-      if (typeof chevronPlugin !== 'undefined') {
-        marked.use({ extensions: [chevronPlugin()] });
-      }
-
-      // Example 1: Basic
-      document.getElementById('example1').innerHTML = marked.parse(`\`\`\`chevron
-Planning
-Development
-Testing
-Deployment
-\`\`\``);
-
-      // Example 2: Legacy Format - Custom Width and Height
-      document.getElementById('example2').innerHTML = marked.parse(`\`\`\`chevron 150 80
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
-\`\`\``);
-
-      // Example 3: New Format - Named Parameters
-      document.getElementById('example3').innerHTML = marked.parse(`\`\`\`chevron width=180 height=90 fontSize=16
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
-\`\`\``);
-
-      // Example 4: Legacy Format - Custom Colors
-      document.getElementById('example4').innerHTML = marked.parse(`\`\`\`chevron
-Idea | #9C27B0
-Research | #3F51B5
-Design | #03A9F4
-Development | #4CAF50
-Testing | #FFC107
-Deployment | #FF5722
-\`\`\``);
-
-      // Example 5: New Format - Per-Chevron Options
-      document.getElementById('example5').innerHTML = marked.parse(`\`\`\`chevron width=150 height=100
-Idea | color=#9C27B0 fontSize=18
-Research | color=#3F51B5 fontSize=16
-Design | color=#03A9F4 fontSize=14
-Development | color=#4CAF50 fontSize=12
-Testing | color=#FFC107 fontSize=10
-Deployment | color=#FF5722 fontSize=8
-\`\`\``);
-
-      // Example 6: Custom HTML Content with new syntax
-      document.getElementById('example6').innerHTML = marked.parse(`\`\`\`chevron width=120 height=120
-Prospecting | color=#4285F4 | <div><span style='font-size:1.5em;'>🔍</span><br>Prospecting</div>
-Connecting | color=#34A853 | <div><span style='font-size:1.5em;'>🤝</span><br>Connecting</div>
-Qualifying | color=#FBBC05 | <div><span style='font-size:1.5em;'>💬</span><br>Qualifying</div>
-Presenting | color=#EA4335 | <div><span style='font-size:1.5em;'>📊</span><br>Presenting</div>
-Closing | color=#5F6368 | <div><span style='font-size:1.5em;'>✅</span><br>Closing</div>
-\`\`\``);
-
-      // Example 7: Mixed Options and HTML Content
-      document.getElementById('example7').innerHTML = marked.parse(`\`\`\`chevron width=130 height=110 fontSize=12
-Collecting | color=darkblue fontSize=14 | <div><strong>Collecting</strong><br>Data</div>
-Processing | color=teal | <div><strong>Processing</strong><br>Analysis</div>
-Visualizing | color=purple fontSize=16 | <div><strong>Visualizing</strong><br>Results</div>
-Reporting | color=crimson | <div><strong>Reporting</strong><br>Insights</div>
-\`\`\``);
-
-      // Add pyramid examples
-      document.getElementById('pyramid1').innerHTML = marked.parse(`\`\`\`pyramid
-Strategy
-Tactics
-Operations
-Execution
-\`\`\``);
-
-      document.getElementById('pyramid2').innerHTML = marked.parse(`\`\`\`pyramid width=500 height=300
-Vision | #9C27B0
-Goals | #3F51B5
-Objectives | #03A9F4
-Actions | #4CAF50
-\`\`\``);
-
-      document.getElementById('pyramid3').innerHTML = marked.parse(`\`\`\`pyramid width=400 height=300
-Leadership | #4285F4 | <div><span style='font-size:1.2em;'>👑</span><br>Leadership</div>
-Management | #34A853 | <div><span style='font-size:1.2em;'>📊</span><br>Management</div>
-Operations | #FBBC05 | <div><span style='font-size:1.2em;'>⚙️</span><br>Operations</div>
-Support | #EA4335 | <div><span style='font-size:1.2em;'>🛠️</span><br>Support</div>
-\`\`\``);
-
-      // Add venn examples
-      document.getElementById('venn1').innerHTML = marked.parse(`\`\`\`venn 
-A∩B
-B∩C
-A∩C
-A∩B∩C
-\`\`\``);
-
-      document.getElementById('venn2').innerHTML = marked.parse(`\`\`\`venn width=600 height=400
-Marketing | #4285F4
-Sales | #34A853
-Support | #FBBC05
-Core Team | #EA4335
-\`\`\``);
-
-      document.getElementById('venn3').innerHTML = marked.parse(`\`\`\`venn width=600 height=400
-Design | #4285F4 | <div><span style='font-size:1.2em;'>🎨</span><br>Design</div>
-Development | #34A853 | <div><span style='font-size:1.2em;'>💻</span><br>Development</div>
-Testing | #FBBC05 | <div><span style='font-size:1.2em;'>🔍</span><br>Testing</div>
-DevOps | #EA4335 | <div><span style='font-size:1.2em;'>⚙️</span><br>DevOps</div>
-\`\`\``);
-
-    });
-  </script>
+  
+  <!-- Load editor script -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>

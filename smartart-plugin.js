@@ -2,15 +2,15 @@
 // Combined engine and plugin for SmartArt diagrams in Marp presentations
 
 // Import the diagram processors
-const { processPyramidDiagram } = require("./pyramid");
-const { processVennDiagram } = require("./venn");
-const { processChevronDiagram } = require("./chevron");
+import { processPyramidDiagram } from "./pyramid.js";
+import { processVennDiagram } from "./venn.js";
+import { processChevronDiagram } from "./chevron.js";
 
 /**
  * SmartArt plugin function for Marpit
  * Enables rendering of custom diagram types in Marpit presentations
  */
-function smartartPlugin(marpit) {
+export function smartartPlugin(marpit) {
   // Get access to the markdown-it instance
   const { markdown } = marpit;
 
@@ -47,13 +47,10 @@ function smartartPlugin(marpit) {
  * Engine function for Marp CLI
  * This is the entry point when used with --engine parameter
  */
-module.exports = ({ marp }) => {
+export default ({ marp }) => {
   // Apply the SmartArt plugin directly to the Marp instance
   smartartPlugin(marp);
 
   // Return the enhanced Marp instance
   return marp;
 };
-
-// Export the plugin function for direct use
-module.exports.smartartPlugin = smartartPlugin;
