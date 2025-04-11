@@ -6,22 +6,16 @@ A collection of custom diagram plugins for Marp presentations, including Pyramid
 
 The project is organized into modular components:
 
-- **Diagram Renderers**:
+- `smartart-plugin.js`: Custom Marp engine that uses the unified plugin
   - `pyramid.js`: Renders pyramid diagrams
   - `chevron.js`: Renders chevron diagrams
   - `venn.js`: Renders venn diagrams
-  
-- **Utilities**:
   - `utils.js`: Shared utility functions for all diagram types
-  
-- **Integration**:
-  - `smartart-markdown-it.js`: Unified plugin that combines all diagram types
-  - `smartart-map-engine.js`: Custom Marp engine that uses the unified plugin
 
 ## Usage with Marp CLI
 
 ```bash
-npx @marp-team/marp-cli --engine ./smartart-map-engine.js your-presentation.md --output your-presentation.html
+npx @marp-team/marp-cli --engine ./smartart-plugin.js your-presentation.md --output your-presentation.html
 ```
 
 ## Diagram Types
@@ -31,12 +25,18 @@ npx @marp-team/marp-cli --engine ./smartart-map-engine.js your-presentation.md -
 Create hierarchical structures with pyramid diagrams:
 
 ````markdown
-```mermaid
-pyramid
-options: width=400 height=200 fontSize=18
-    Strategy | #4285F4
-    Tactics | #34A853
-    Operations | #FBBC05
+```smartart
+type: pyramid
+width: 600
+height: 400
+
+---
+
+Leadership { color: '#1E88E5' }
+Management { color: '#43A047', fontSize: 18 }
+Team Leads { color: '#FDD835' }
+Developers { color: '#E53935', fontSize: 14 }
+Support { color: '#757575' }
 ```
 ````
 
@@ -45,13 +45,18 @@ options: width=400 height=200 fontSize=18
 Create process flows and sequential steps with chevron diagrams:
 
 ````markdown
-```mermaid
-chevron
-options: width=200 height=100 fontSize=16
-    Analysis | #1E88E5
-    Design | #43A047
-    Implementation | #FDD835
-    Evaluation | #E53935
+```smartart
+type: chevron
+width: 250
+height: 120
+fontSize: 16
+
+---
+
+Analysis { color: '#1E88E5' }
+Design { color: '#43A047' }
+Implementation { color: '#FDD835' }
+Evaluation { color: '#E53935' }
 ```
 ````
 
@@ -60,87 +65,92 @@ options: width=200 height=100 fontSize=16
 Create relationship and intersection diagrams with Venn diagrams:
 
 ````markdown
-```mermaid
-venn
-options: width=600 height=400 fontSize=16
-    Concept A | #4285F4
-    Concept B | #34A853
-    Concept C | #FBBC05
-    Intersection | #EA4335
+```smartart
+type: venn
+width: 650
+height: 450
+fontSize: 18
+
+---
+
+Technology { color: '#1976D2' }
+Business { color: '#388E3C' }
+User Experience { color: '#F57C00' }
+Product Success { fontSize: 22, color: '#D32F2F' }
 ```
 ````
 
 ## Syntax Reference
 
-All diagram types follow a similar syntax pattern:
-
-```
-diagram-type
-options: width=X height=Y fontSize=Z
-    Content 1 | #ColorCode
-    Content 2 | fontSize=16 | #ColorCode
-    ...
-```
-
 ### Options
 
-You can specify global options for each diagram:
+Each diagram can be configured with global options specified after the type declaration:
 
-- **width**: Width of the diagram in pixels
-- **height**: Height of the diagram in pixels
-- **fontSize**: Base font size for text in the diagram
+- **width**: Diagram width in pixels (default varies by type)
+- **height**: Diagram height in pixels (default varies by type)
+- **fontSize**: Base font size for text (default varies by type)
+
+Example:
+
+```smartart
+type: pyramid
+width: 500
+height: 300
+fontSize: 16
+
+---
+
+Content here...
+```
 
 ### Content Format
 
-Each line of content follows this pattern:
+Content is defined after a `---` separator. Each line follows this pattern:
 
 ```
-Text content | [options] | #color-code
+Label { option1: 'value1', option2: 'value2' }
 ```
 
-- **Text content**: Plain text to display
-- **Options**: Item-specific options like `fontSize=16` (optional)
-- **Color code**: Hex color code starting with # (optional)
+Available options:
+
+- **color**: Color code (e.g., '#4285F4')
+- **fontSize**: Custom font size for this item
 
 ### Color Handling
 
-There's an important difference in how colors are applied:
+Colors are handled differently per diagram type:
 
-- **Pyramid and Chevron diagrams**: Colors are applied as background colors
-- **Venn diagrams**: Colors are applied as text colors
-
-## Integration with Standard Mermaid
-
-These plugins work alongside standard Mermaid diagrams, so you can use both in the same presentation:
-
-````markdown
-```mermaid
-flowchart TD
-    A[Start] --> B{Decision}
-    B -->|Yes| C[Process]
-    B -->|No| D[End]
-```
-````
+- **Pyramid/Chevron**: Colors set the background
+- **Venn**: Colors apply to the text
 
 ## Multiple Diagrams on One Slide
 
-You can combine multiple diagrams on a single slide:
+Multiple diagrams can be placed on a single slide:
 
 ````markdown
-```mermaid
-pyramid
-options: width=300 height=200
-Strategy | #4285F4
-Tactics | #34A853
+```smartart
+type: pyramid
+width: 400
+height: 200
+
+---
+
+Strategy { color: '#4285F4' }
+Tactics { color: '#34A853' }
+Operations { color: '#FBBC05' }
 ```
 
-```mermaid
-chevron
-options: width=400 height=80
-Plan | #1E88E5
-Build | #43A047
-Test | #FDD835
-Deploy | #E53935
+```smartart
+type: chevron
+width: 180
+height: 100
+
+---
+
+Plan { color: '#1E88E5' }
+Build { color: '#43A047' }
+Test { color: '#FDD835' }
+Deploy { color: '#E53935' }
 ```
 ````
 
