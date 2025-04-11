@@ -1,143 +1,162 @@
-# Chevron Process Diagram Plugin for Marked.js
+# Marp SmartArts
 
-A Marked.js plugin that allows you to create SVG chevron process diagrams directly in your Markdown using code blocks. This plugin makes it easy to create professional-looking process flows, workflows, and step diagrams.
+A collection of custom diagram plugins for Marp presentations, including Pyramid, Chevron, and Venn diagrams. These plugins integrate seamlessly with Marp and can coexist with standard Mermaid diagrams to create beautiful, interactive diagrams in your presentations.
 
-## Installation
+## Project Structure
 
-### Browser
+The project is organized into modular components:
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="chevron-marked-plugin.js"></script>
-<script>
-  // Register the plugin
-  marked.use({ extensions: [chevronPlugin()] });
-</script>
-```
+- `smartart-plugin.js`: Custom Marp engine that uses the unified plugin
+  - `pyramid.js`: Renders pyramid diagrams
+  - `chevron.js`: Renders chevron diagrams
+  - `venn.js`: Renders venn diagrams
+  - `utils.js`: Shared utility functions for all diagram types
 
-### Node.js
+## Usage with Marp CLI
 
 ```bash
-npm install marked
+npx @marp-team/marp-cli --engine ./smartart-plugin.js your-presentation.md --output your-presentation.html
 ```
 
-```javascript
-const marked = require('marked');
-const { chevronPlugin } = require('./chevron-marked-plugin.js');
+## Diagram Types
 
-// Register the plugin
-marked.use({ extensions: [chevronPlugin()] });
-```
+### Pyramid Diagrams
 
-## Usage
-
-Create chevron diagrams using code blocks with the `chevron` language identifier:
+Create hierarchical structures with pyramid diagrams:
 
 ````markdown
-```chevron
-Step 1
-Step 2
-Step 3
+```smartart
+type: pyramid
+width: 600
+height: 400
+
+---
+
+Leadership { color: '#1E88E5' }
+Management { color: '#43A047', fontSize: 18 }
+Team Leads { color: '#FDD835' }
+Developers { color: '#E53935', fontSize: 14 }
+Support { color: '#757575' }
 ```
 ````
 
-### Optional Parameters
+### Chevron Diagrams
 
-You can specify width and height for each chevron:
+Create process flows and sequential steps with chevron diagrams:
 
 ````markdown
-```chevron 200 100
-Step 1
-Step 2
-Step 3
+```smartart
+type: chevron
+width: 250
+height: 120
+fontSize: 16
+
+---
+
+Analysis { color: '#1E88E5' }
+Design { color: '#43A047' }
+Implementation { color: '#FDD835' }
+Evaluation { color: '#E53935' }
 ```
 ````
 
-Where:
-- `200` is the width of each chevron in pixels
-- `100` is the height of each chevron in pixels
+### Venn Diagrams
 
-### Custom Colors
-
-Specify custom colors for each chevron by adding a pipe (`|`) followed by a color code:
+Create relationship and intersection diagrams with Venn diagrams:
 
 ````markdown
-```chevron
-Planning | #4285F4
-Development | #34A853
-Testing | #FBBC05
-Deployment | #EA4335
-```
-````
+```smartart
+type: venn
+width: 650
+height: 450
+fontSize: 18
 
-### Custom HTML Content
+---
 
-Add custom HTML content to each chevron by adding a second pipe (`|`) followed by HTML:
-
-````markdown
-```chevron
-Planning | #4285F4 | <strong>Planning</strong><br>Phase 1
-Development | #34A853 | <strong>Development</strong><br>Phase 2
-Testing | #FBBC05 | <strong>Testing</strong><br>Phase 3
+Technology { color: '#1976D2' }
+Business { color: '#388E3C' }
+User Experience { color: '#F57C00' }
+Product Success { fontSize: 22, color: '#D32F2F' }
 ```
 ````
 
 ## Syntax Reference
 
-The general syntax for each chevron line is:
+### Options
+
+Each diagram can be configured with global options specified after the type declaration:
+
+- **width**: Diagram width in pixels (default varies by type)
+- **height**: Diagram height in pixels (default varies by type)
+- **fontSize**: Base font size for text (default varies by type)
+
+Example:
+
+```smartart
+type: pyramid
+width: 500
+height: 300
+fontSize: 16
+
+---
+
+Content here...
+```
+
+### Content Format
+
+Content is defined after a `---` separator. Each line follows this pattern:
 
 ```
-Step text | #color-code | <optional HTML content>
+Label { option1: 'value1', option2: 'value2' }
 ```
 
-- **Step text**: Plain text to display in the chevron (used if no HTML is provided)
-- **Color code**: Hex color code starting with # (optional)
-- **HTML content**: Custom HTML to display in the chevron (optional)
+Available options:
 
-## Examples
+- **color**: Color code (e.g., '#4285F4')
+- **fontSize**: Custom font size for this item
 
-### Basic Process Flow
+### Color Handling
+
+Colors are handled differently per diagram type:
+
+- **Pyramid/Chevron**: Colors set the background
+- **Venn**: Colors apply to the text
+
+## Multiple Diagrams on One Slide
+
+Multiple diagrams can be placed on a single slide:
 
 ````markdown
-```chevron
-Planning
-Development
-Testing
-Deployment
+```smartart
+type: pyramid
+width: 400
+height: 200
+
+---
+
+Strategy { color: '#4285F4' }
+Tactics { color: '#34A853' }
+Operations { color: '#FBBC05' }
+```
+
+```smartart
+type: chevron
+width: 180
+height: 100
+
+---
+
+Plan { color: '#1E88E5' }
+Build { color: '#43A047' }
+Test { color: '#FDD835' }
+Deploy { color: '#E53935' }
 ```
 ````
-
-### Agile Process
-
-````markdown
-```chevron 150 80
-Backlog
-Sprint Planning
-Daily Scrum
-Sprint Review
-Retrospective
-```
-````
-
-### Sales Process with Icons
-
-````markdown
-```chevron 120 120
-Prospecting | #4285F4 | <div><span style='font-size:1.5em;'>🔍</span><br>Prospecting</div>
-Connecting | #34A853 | <div><span style='font-size:1.5em;'>🤝</span><br>Connecting</div>
-Qualifying | #FBBC05 | <div><span style='font-size:1.5em;'>💬</span><br>Qualifying</div>
-Presenting | #EA4335 | <div><span style='font-size:1.5em;'>📊</span><br>Presenting</div>
-Closing | #5F6368 | <div><span style='font-size:1.5em;'>✅</span><br>Closing</div>
-```
-````
-
-## Auto-sizing Text
-
-The plugin automatically resizes text to fit within the chevron. This ensures that your diagrams look good regardless of the content length or chevron size.
 
 ## Browser Compatibility
 
-This plugin should work in all modern browsers that support SVG and foreignObject. For IE11 support, you may need additional polyfills.
+These plugins work in all modern browsers that support SVG and foreignObject elements.
 
 ## License
 
