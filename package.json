@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Custom diagram plugins for Marp presentations including Venn, Pyramid, and Chevron diagrams",
   "main": "mermaid-engine.js",
+   "type": "module",
   "keywords": [
     "marp",
     "diagrams",
