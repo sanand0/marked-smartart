@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "Custom diagram plugins for Marp presentations including Venn, Pyramid, and Chevron diagrams",
   "main": "mermaid-engine.js",
-   "type": "module",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "keywords": [
     "marp",
     "diagrams",
@@ -25,5 +30,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/krishna-gramener/marked-smartart.git"
+  },
+  "dependencies": {
+    "@marp-team/marp-core": "^4.0.1"
   }
 }
