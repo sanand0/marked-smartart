@@ -16,10 +16,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files from the current directory
+// Serve static files from the dist directory (bundled files)
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Serve static files from the current directory for development
 app.use(express.static(__dirname));
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Bundled version available at http://localhost:${PORT}/dist/index.html`);
 });

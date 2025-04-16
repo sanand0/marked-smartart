@@ -1,5 +1,6 @@
 import { smartartPlugin } from "./smartart-plugin.js";
-import { WebContainer } from "https://cdn.jsdelivr.net/npm/@webcontainer/api@1.5.3/+esm";
+import { WebContainer } from "@webcontainer/api";
+
 document.addEventListener("DOMContentLoaded", () => {
   // DOM elements
   const inputArea = document.getElementById("input-area");
@@ -45,7 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const pluginFiles = ['utils.js', 'pyramid.js', 'venn.js', 'chevron.js', 'smartart-plugin.js'];
         await Promise.all(
           pluginFiles.map(async file => {
-            const content = await fetch(`./${file}`).then(res => res.text());
+            // When bundled, we need to use the right path
+            const isProduction = window.location.pathname.includes('/dist/');
+            const basePath = isProduction ? './' : './';
+            const content = await fetch(`${basePath}${file}`).then(res => res.text());
             return webcontainerInstance.fs.writeFile(`/plugins/${file}`, content);
           })
         );
