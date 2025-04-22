@@ -3,7 +3,7 @@
  * Creates SVG pyramid diagrams with customizable layers
  */
 
-const { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } = require('./utils');
+import { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } from './utils.js';
 
 /**
  * Creates an SVG pyramid diagram
@@ -91,8 +91,7 @@ function processPyramidDiagram(content) {
   return createPyramidSVG(contentArray, optionsArray, globalOptions);
 }
 
-module.exports = {
+export {
   createPyramidSVG,
-  processPyramidDiagram,
-  defaults: { width: 400, height: 200, fontSize: 14 }
+  processPyramidDiagram
 };

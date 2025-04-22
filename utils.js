@@ -84,7 +84,7 @@ const processSmartArtContent = (content, diagramType) => {
   return { contentArray, optionsArray, globalOptions };
 };
 
-module.exports = {
+export {
   createError,
   getDefaultStyles,
   getDefaultColors,

@@ -3,7 +3,7 @@
  * Creates SVG Venn diagrams with customizable circles and regions
  */
 
-const { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } = require('./utils');
+import { createError, getDefaultStyles, getDefaultColors, processSmartArtContent } from './utils.js';
 
 /**
  * Creates an SVG Venn diagram with three circles and four intersection regions
@@ -114,8 +114,7 @@ function processVennDiagram(content) {
   return createVennSVG(contentArray, optionsArray, globalOptions);
 }
 
-module.exports = {
+export {
   createVennSVG,
-  processVennDiagram,
-  defaults: { width: 600, height: 400, fontSize: 14 }
+  processVennDiagram
 };
